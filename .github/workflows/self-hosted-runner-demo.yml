@@ -10,36 +10,36 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 jobs:
   build-and-test:
     runs-on: [self-hosted, windows, x64]
     steps:
-      # Step 1: Check out the repository code onto the runner machine
       - name: Checkout repository
         uses: actions/checkout@v4
-      # Step 2: Install dependencies from requirements.txt
+
       - name: Install dependencies
+        shell: cmd
         run: |
-          & "C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe" -m pip install --upgrade pip
-          & "C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe" -m pip install -r requirements.txt
-      # Step 3: Show environment info (great for learning/debugging)
+          C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe -m pip install --upgrade pip
+          C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe -m pip install -r requirements.txt
+
       - name: Show environment info
+        shell: cmd
         run: |
-          & "C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe" --version
-          & "C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe" -m pip list
-          echo "Runner OS: ${{ runner.os }}"
-          echo "Runner Name: ${{ runner.name }}"
-          echo "Workflow triggered by: ${{ github.event_name }}"
-      # Step 4: Run the main calculator script
+          C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe --version
+          C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe -m pip list
+
       - name: Run calculator script
-        run: & "C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe" calculator.py
-      # Step 5: Run the automated tests with pytest
+        shell: cmd
+        run: C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe calculator.py
+
       - name: Run tests with pytest
-        run: & "C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe" -m pytest test_calculator.py -v
-      # Step 6: Show a success message
+        shell: cmd
+        run: C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe -m pytest test_calculator.py -v
+
       - name: Job summary
+        shell: cmd
         run: |
-          echo "All tests passed on self-hosted runner!"
-          echo "This job ran on YOUR machine, not GitHub's cloud."
+          echo All tests passed on self-hosted runner!
+          echo This job ran on YOUR machine, not GitHub's cloud.
