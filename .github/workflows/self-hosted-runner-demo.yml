@@ -14,14 +14,7 @@ on:
   workflow_dispatch:
 jobs:
   build-and-test:
-    # ---------------------------------------------------------------
-    # KEY LINE: "self-hosted" tells GitHub to use YOUR machine.
-    # You can also add labels like [self-hosted, Windows, python]
-    # that you set when registering your runner.
-    # ---------------------------------------------------------------
     runs-on: [self-hosted, windows, x64]
-    env:
-      PYTHON: C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe
     steps:
       # Step 1: Check out the repository code onto the runner machine
       - name: Checkout repository
@@ -29,22 +22,22 @@ jobs:
       # Step 2: Install dependencies from requirements.txt
       - name: Install dependencies
         run: |
-          $env:PYTHON -m pip install --upgrade pip
-          $env:PYTHON -m pip install -r requirements.txt
+          & "C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe" -m pip install --upgrade pip
+          & "C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe" -m pip install -r requirements.txt
       # Step 3: Show environment info (great for learning/debugging)
       - name: Show environment info
         run: |
-          $env:PYTHON --version
-          $env:PYTHON -m pip list
+          & "C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe" --version
+          & "C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe" -m pip list
           echo "Runner OS: ${{ runner.os }}"
           echo "Runner Name: ${{ runner.name }}"
           echo "Workflow triggered by: ${{ github.event_name }}"
       # Step 4: Run the main calculator script
       - name: Run calculator script
-        run: $env:PYTHON calculator.py
+        run: & "C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe" calculator.py
       # Step 5: Run the automated tests with pytest
       - name: Run tests with pytest
-        run: $env:PYTHON -m pytest test_calculator.py -v
+        run: & "C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe" -m pytest test_calculator.py -v
       # Step 6: Show a success message
       - name: Job summary
         run: |
