@@ -20,6 +20,8 @@ jobs:
     # that you set when registering your runner.
     # ---------------------------------------------------------------
     runs-on: [self-hosted, windows, x64]
+    env:
+      PYTHON: C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe
     steps:
       # Step 1: Check out the repository code onto the runner machine
       - name: Checkout repository
@@ -27,25 +29,24 @@ jobs:
       # Step 2: Install dependencies from requirements.txt
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          $env:PYTHON -m pip install --upgrade pip
+          $env:PYTHON -m pip install -r requirements.txt
       # Step 3: Show environment info (great for learning/debugging)
       - name: Show environment info
         run: |
-          python --version
-          pip list
+          $env:PYTHON --version
+          $env:PYTHON -m pip list
           echo "Runner OS: ${{ runner.os }}"
           echo "Runner Name: ${{ runner.name }}"
           echo "Workflow triggered by: ${{ github.event_name }}"
       # Step 4: Run the main calculator script
       - name: Run calculator script
-        run: python calculator.py
+        run: $env:PYTHON calculator.py
       # Step 5: Run the automated tests with pytest
       - name: Run tests with pytest
-        run: pytest test_calculator.py -v
+        run: $env:PYTHON -m pytest test_calculator.py -v
       # Step 6: Show a success message
       - name: Job summary
         run: |
           echo "All tests passed on self-hosted runner!"
           echo "This job ran on YOUR machine, not GitHub's cloud."
-
