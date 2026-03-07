@@ -4,18 +4,14 @@
 # instead of GitHub's cloud servers.
 #
 # Trigger: runs on every push or pull request to the main branch.
-
 name: Self-Hosted Runner Demo (Python)
-
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-
 jobs:
   build-and-test:
     # ---------------------------------------------------------------
@@ -23,28 +19,17 @@ jobs:
     # You can also add labels like [self-hosted, Windows, python]
     # that you set when registering your runner.
     # ---------------------------------------------------------------
-
     runs-on: [self-hosted, windows, x64]
-
-
     steps:
       # Step 1: Check out the repository code onto the runner machine
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      # Step 2: Set up Python (uses the Python already on your machine)
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      # Step 3: Install dependencies from requirements.txt
+      # Step 2: Install dependencies from requirements.txt
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
-      # Step 4: Show environment info (great for learning/debugging)
+      # Step 3: Show environment info (great for learning/debugging)
       - name: Show environment info
         run: |
           python --version
@@ -52,17 +37,16 @@ jobs:
           echo "Runner OS: ${{ runner.os }}"
           echo "Runner Name: ${{ runner.name }}"
           echo "Workflow triggered by: ${{ github.event_name }}"
-
-      # Step 5: Run the main calculator script
+      # Step 4: Run the main calculator script
       - name: Run calculator script
         run: python calculator.py
-
-      # Step 6: Run the automated tests with pytest
+      # Step 5: Run the automated tests with pytest
       - name: Run tests with pytest
         run: pytest test_calculator.py -v
-
-      # Step 7: Show a success message
+      # Step 6: Show a success message
       - name: Job summary
         run: |
           echo "All tests passed on self-hosted runner!"
           echo "This job ran on YOUR machine, not GitHub's cloud."
+```
+
