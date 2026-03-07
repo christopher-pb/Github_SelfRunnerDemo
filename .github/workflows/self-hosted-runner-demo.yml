@@ -1,9 +1,4 @@
 # .github/workflows/self-hosted-runner-demo.yml
-#
-# This workflow runs on YOUR OWN Windows machine (self-hosted runner)
-# instead of GitHub's cloud servers.
-#
-# Trigger: runs on every push or pull request to the main branch.
 name: Self-Hosted Runner Demo (Python)
 on:
   push:
@@ -21,8 +16,8 @@ jobs:
       - name: Install dependencies
         shell: cmd
         run: |
-          C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe -m pip install --upgrade pip
-          C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe -m pip install -r requirements.txt
+          C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe -m pip install --upgrade pip --user
+          C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe -m pip install -r requirements.txt --user
 
       - name: Show environment info
         shell: cmd
