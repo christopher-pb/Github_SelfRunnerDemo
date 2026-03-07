@@ -10,8 +10,8 @@ name: Self-Hosted Runner Demo (Python)
 on:
   push:
     branches: [ "main" ]
-  # pull_request:
-  #   branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -24,7 +24,7 @@ jobs:
     # that you set when registering your runner.
     # ---------------------------------------------------------------
 
-    runs-on: [self-hosted, windows, x64]
+    runs-on: [self-hosted, Windows, X64]
 
 
     steps:
