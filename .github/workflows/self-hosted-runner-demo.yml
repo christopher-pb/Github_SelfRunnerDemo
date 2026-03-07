@@ -48,5 +48,4 @@ jobs:
         run: |
           echo "All tests passed on self-hosted runner!"
           echo "This job ran on YOUR machine, not GitHub's cloud."
-```
 
