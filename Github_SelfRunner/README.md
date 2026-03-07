@@ -1,4 +1,4 @@
-# GitHub Actions Self-Hosted Runner — Beginner's Guide (Windows + Python)
+## GitHub Actions Self-Hosted Runner — Beginner's Guide (Windows + Python)
 
 ## What is a Self-Hosted Runner?
 
