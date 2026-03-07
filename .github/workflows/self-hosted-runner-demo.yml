@@ -1,0 +1,40 @@
+# .github/workflows/self-hosted-runner-demo.yml
+name: Self-Hosted Runner Demo (Python)
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+jobs:
+  build-and-test:
+    runs-on: [self-hosted, windows, x64]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        shell: cmd
+        run: |
+          C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe -m pip install --upgrade pip
+          C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe -m pip install -r requirements.txt
+
+      - name: Show environment info
+        shell: cmd
+        run: |
+          C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe --version
+          C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe -m pip list
+
+      - name: Run calculator script
+        shell: cmd
+        run: C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe calculator.py
+
+      - name: Run tests with pytest
+        shell: cmd
+        run: C:\Users\alaka\AppData\Local\Programs\Python\Python313\python.exe -m pytest test_calculator.py -v
+
+      - name: Job summary
+        shell: cmd
+        run: |
+          echo All tests passed on self-hosted runner!
+          echo This job ran on YOUR machine, not GitHub's cloud.
