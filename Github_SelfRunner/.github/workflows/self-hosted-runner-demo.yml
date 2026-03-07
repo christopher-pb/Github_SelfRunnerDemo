@@ -24,7 +24,7 @@ jobs:
     # that you set when registering your runner.
     # ---------------------------------------------------------------
 
-    runs-on: [self-hosted, windows, x64]
+    runs-on: [self-hosted, Windows, X64]
 
 
     steps:
