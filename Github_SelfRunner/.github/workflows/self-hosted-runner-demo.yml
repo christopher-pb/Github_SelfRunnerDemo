@@ -8,6 +8,7 @@ on:
 jobs:
   build-and-test:
 
+    # KEY LINE: "self-hosted" tells GitHub to use YOUR machine
     runs-on: [self-hosted, windows, x64]
 
     steps:
