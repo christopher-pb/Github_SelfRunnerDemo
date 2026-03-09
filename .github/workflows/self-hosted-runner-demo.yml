@@ -35,12 +35,41 @@ jobs:
       - name: Locate Python
         shell: powershell
         run: |
-          if (Get-Command python3 -ErrorAction SilentlyContinue) {
-            echo "PYTHON=python3" >> $env:GITHUB_ENV
-          } elseif (Get-Command python -ErrorAction SilentlyContinue) {
-            echo "PYTHON=python" >> $env:GITHUB_ENV
-          } else {
-            Write-Error "Python not found on PATH. Please install Python."
+          $found = $false
+          # First check common install locations (avoids Windows Store alias)
+          $paths = @(
+            'C:\Python313\python.exe',
+            'C:\Python312\python.exe',
+            'C:\Python311\python.exe',
+            'C:\Python310\python.exe',
+            "$env:LOCALAPPDATA\Programs\Python\Python313\python.exe",
+            "$env:LOCALAPPDATA\Programs\Python\Python312\python.exe",
+            "$env:LOCALAPPDATA\Programs\Python\Python311\python.exe"
+          )
+          foreach ($p in $paths) {
+            if (Test-Path $p) {
+              echo "PYTHON=$p" >> $env:GITHUB_ENV
+              Write-Host "Found Python at: $p"
+              $found = $true
+              break
+            }
+          }
+          # Then try py launcher / python3 on PATH
+          if (-not $found) {
+            foreach ($cmd in @('py', 'python3')) {
+              try {
+                $out = & $cmd --version 2>&1
+                if ($out -match 'Python \d') {
+                  echo "PYTHON=$cmd" >> $env:GITHUB_ENV
+                  Write-Host "Found: $cmd -> $out"
+                  $found = $true
+                  break
+                }
+              } catch {}
+            }
+          }
+          if (-not $found) {
+            Write-Error "Python not found. Please install Python and ensure it is on PATH."
             exit 1
           }
 
