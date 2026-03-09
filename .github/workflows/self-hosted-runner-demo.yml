@@ -31,49 +31,49 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Find Python on the machine (works on any OS)
+      # Step 2: Find Python on the machine (works on Windows, Linux, macOS)
       - name: Locate Python
-        shell: bash
+        shell: pwsh
         run: |
-          if command -v python3 &>/dev/null; then
-            echo "PYTHON=python3" >> "$GITHUB_ENV"
-          elif command -v python &>/dev/null; then
-            echo "PYTHON=python" >> "$GITHUB_ENV"
-          else
-            echo "::error::Python not found on PATH. Please install Python."
+          if (Get-Command python3 -ErrorAction SilentlyContinue) {
+            echo "PYTHON=python3" >> $env:GITHUB_ENV
+          } elseif (Get-Command python -ErrorAction SilentlyContinue) {
+            echo "PYTHON=python" >> $env:GITHUB_ENV
+          } else {
+            Write-Error "Python not found on PATH. Please install Python."
             exit 1
-          fi
+          }
 
       # Step 3: Install dependencies from requirements.txt
       - name: Install dependencies
-        shell: bash
+        shell: pwsh
         run: |
-          $PYTHON -m pip install --upgrade pip
-          $PYTHON -m pip install -r requirements.txt
+          & $env:PYTHON -m pip install --upgrade pip
+          & $env:PYTHON -m pip install -r requirements.txt
 
       # Step 4: Show environment info (great for learning/debugging)
       - name: Show environment info
-        shell: bash
+        shell: pwsh
         run: |
-          $PYTHON --version
-          $PYTHON -m pip list
-          echo "Runner OS: ${{ runner.os }}"
-          echo "Runner Name: ${{ runner.name }}"
-          echo "Workflow triggered by: ${{ github.event_name }}"
+          & $env:PYTHON --version
+          & $env:PYTHON -m pip list
+          Write-Host "Runner OS: ${{ runner.os }}"
+          Write-Host "Runner Name: ${{ runner.name }}"
+          Write-Host "Workflow triggered by: ${{ github.event_name }}"
 
       # Step 5: Run the main calculator script
       - name: Run calculator script
-        shell: bash
-        run: $PYTHON calculator.py
+        shell: pwsh
+        run: & $env:PYTHON calculator.py
 
       # Step 6: Run the automated tests with pytest
       - name: Run tests with pytest
-        shell: bash
-        run: $PYTHON -m pytest test_calculator.py -v
+        shell: pwsh
+        run: & $env:PYTHON -m pytest test_calculator.py -v
 
       # Step 7: Show a success message
       - name: Job summary
-        shell: bash
+        shell: pwsh
         run: |
-          echo "All tests passed on self-hosted runner!"
-          echo "This job ran on YOUR machine, not GitHub's cloud."
+          Write-Host "All tests passed on self-hosted runner!"
+          Write-Host "This job ran on YOUR machine, not GitHub's cloud."
