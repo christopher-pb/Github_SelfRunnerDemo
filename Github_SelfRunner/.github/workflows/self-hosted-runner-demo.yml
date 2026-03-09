@@ -1,7 +1,8 @@
 # .github/workflows/self-hosted-runner-demo.yml
 #
-# This workflow runs on YOUR OWN Windows machine (self-hosted runner)
+# This workflow runs on YOUR OWN machine (self-hosted runner)
 # instead of GitHub's cloud servers.
+# Works on any machine (Windows, Linux, macOS) with Python on PATH.
 #
 # Trigger: runs on every push or pull request to the main branch.
 
@@ -23,46 +24,56 @@ jobs:
     # You can also add labels like [self-hosted, Windows, python]
     # that you set when registering your runner.
     # ---------------------------------------------------------------
-
-    runs-on: [self-hosted, Windows, x64]
-
+    runs-on: self-hosted
 
     steps:
       # Step 1: Check out the repository code onto the runner machine
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Set up Python (uses the Python already on your machine)
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
+      # Step 2: Find Python on the machine (works on any OS)
+      - name: Locate Python
+        shell: bash
+        run: |
+          if command -v python3 &>/dev/null; then
+            echo "PYTHON=python3" >> "$GITHUB_ENV"
+          elif command -v python &>/dev/null; then
+            echo "PYTHON=python" >> "$GITHUB_ENV"
+          else
+            echo "::error::Python not found on PATH. Please install Python."
+            exit 1
+          fi
 
       # Step 3: Install dependencies from requirements.txt
       - name: Install dependencies
+        shell: bash
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          $PYTHON -m pip install --upgrade pip
+          $PYTHON -m pip install -r requirements.txt
 
       # Step 4: Show environment info (great for learning/debugging)
       - name: Show environment info
+        shell: bash
         run: |
-          python --version
-          pip list
+          $PYTHON --version
+          $PYTHON -m pip list
           echo "Runner OS: ${{ runner.os }}"
           echo "Runner Name: ${{ runner.name }}"
           echo "Workflow triggered by: ${{ github.event_name }}"
 
       # Step 5: Run the main calculator script
       - name: Run calculator script
-        run: python calculator.py
+        shell: bash
+        run: $PYTHON calculator.py
 
       # Step 6: Run the automated tests with pytest
       - name: Run tests with pytest
-        run: pytest test_calculator.py -v
+        shell: bash
+        run: $PYTHON -m pytest test_calculator.py -v
 
       # Step 7: Show a success message
       - name: Job summary
+        shell: bash
         run: |
           echo "All tests passed on self-hosted runner!"
           echo "This job ran on YOUR machine, not GitHub's cloud."
