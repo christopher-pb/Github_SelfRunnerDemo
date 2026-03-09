@@ -31,9 +31,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Find Python on the machine (works on Windows, Linux, macOS)
+      # Step 2: Find Python on the machine
       - name: Locate Python
-        shell: pwsh
+        shell: powershell
         run: |
           if (Get-Command python3 -ErrorAction SilentlyContinue) {
             echo "PYTHON=python3" >> $env:GITHUB_ENV
@@ -46,14 +46,14 @@ jobs:
 
       # Step 3: Install dependencies from requirements.txt
       - name: Install dependencies
-        shell: pwsh
+        shell: powershell
         run: |
           & $env:PYTHON -m pip install --upgrade pip
           & $env:PYTHON -m pip install -r requirements.txt
 
       # Step 4: Show environment info (great for learning/debugging)
       - name: Show environment info
-        shell: pwsh
+        shell: powershell
         run: |
           & $env:PYTHON --version
           & $env:PYTHON -m pip list
@@ -63,19 +63,19 @@ jobs:
 
       # Step 5: Run the main calculator script
       - name: Run calculator script
-        shell: pwsh
+        shell: powershell
         run: |
           & $env:PYTHON calculator.py
 
       # Step 6: Run the automated tests with pytest
       - name: Run tests with pytest
-        shell: pwsh
+        shell: powershell
         run: |
           & $env:PYTHON -m pytest test_calculator.py -v
 
       # Step 7: Show a success message
       - name: Job summary
-        shell: pwsh
+        shell: powershell
         run: |
           Write-Host "All tests passed on self-hosted runner!"
           Write-Host "This job ran on YOUR machine, not GitHub's cloud."
