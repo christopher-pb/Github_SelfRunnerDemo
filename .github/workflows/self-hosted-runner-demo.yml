@@ -64,12 +64,14 @@ jobs:
       # Step 5: Run the main calculator script
       - name: Run calculator script
         shell: pwsh
-        run: & $env:PYTHON calculator.py
+        run: |
+          & $env:PYTHON calculator.py
 
       # Step 6: Run the automated tests with pytest
       - name: Run tests with pytest
         shell: pwsh
-        run: & $env:PYTHON -m pytest test_calculator.py -v
+        run: |
+          & $env:PYTHON -m pytest test_calculator.py -v
 
       # Step 7: Show a success message
       - name: Job summary
