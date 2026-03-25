@@ -27,13 +27,12 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Mark repository as safe for all users
-        shell: powershell
-        run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
       # Step 1: Check out the repository code onto the runner machine
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Mark workspace as safe directory
+        run: git config --global --add safe.directory "${{ github.workspace }}"
 
       # Step 2: Find Python on the machine
       - name: Locate Python
