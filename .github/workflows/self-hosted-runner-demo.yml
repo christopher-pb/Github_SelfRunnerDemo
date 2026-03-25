@@ -27,6 +27,10 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: Mark repository as safe for all users
+        shell: powershell
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
       # Step 1: Check out the repository code onto the runner machine
       - name: Checkout repository
         uses: actions/checkout@v4
